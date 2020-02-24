@@ -1,0 +1,52 @@
+---  
+version: "3.3"
+
+services:
+  ################################################
+  ####         Nextcloud App Container         #####
+  ##############################################
+  nextcloud-app:
+    image: nextcloud
+    container_name: nextcloud-app
+    restart: "no" 
+    volumes: 
+      - /var/clouddata/nextcloud/app:/var/www/html
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.nextcloud-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.nextcloud-http.entrypoints=web"
+      - "traefik.http.routers.nextcloud-http.rule=Host(`cloudy.van-der-velde.net`)" #Domain anpassen
+      - "traefik.http.routers.nextcloud-http.middlewares=nextcloud-https@docker"
+      - "traefik.http.routers.nextcloud.entrypoints=web-secured"
+      - "traefik.http.routers.nextcloud.rule=Host(`cloudy.van-der-velde.net`)" #Domain anpassen
+      - "traefik.http.routers.nextcloud.tls=true"
+      - "traefik.http.routers.nextcloud.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.nextcloud.middlewares=secHeaders@file"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+    networks:
+      - web
+      - backend
+
+ ################################################
+ ####     DB Container not on traefik      #####
+ ##############################################
+  nextcloud-db:
+    image: mariadb
+    container_name: nextcloud-db
+    command: --transaction-isolation=READ-COMMITTED --log-bin=ROW
+    restart: "no" 
+    volumes:
+      - /var/clouddata/nextcloud/database:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_PASSWORD=
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+    networks:
+      - backend
+      
+networks:
+  web:
+    external: true
+  backend:
+    external: false

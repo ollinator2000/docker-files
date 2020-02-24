@@ -1,0 +1,28 @@
+log:
+  level: info
+
+entryPoints:
+  web:
+    address: :80
+  web-secured:
+    address: :443
+  dashboard:
+    address: :8080
+
+certificatesResolvers:
+  mytlschallenge:
+    acme:
+      tlschallenge: true
+      email: oliver@van-der-velde.net
+      storage: /etc/traefik/ACME/acme.json
+
+providers:
+  docker:
+    endpoint: unix:///var/run/docker.sock
+    exposedByDefault: false
+    network: web
+  file:
+    directory: /etc/traefik/dynamic/
+
+api:
+  dashboard: true

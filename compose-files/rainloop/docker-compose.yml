@@ -1,0 +1,28 @@
+---  
+version: "3.3"
+services:
+
+  rainloop:
+    image: hardware/rainloop
+    restart: always
+    container_name: rainloop
+    volumes:
+      - /var/clouddata/rainloop:/rainloop/data
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.rainloop-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.rainloop-http.entrypoints=web"
+      - "traefik.http.routers.rainloop-http.rule=Host(`mail.van-der-velde.net`)" #Domain anpassen
+      - "traefik.http.routers.rainloop-http.middlewares=rainloop-https@docker"
+      - "traefik.http.routers.rainloop.entrypoints=web-secured"
+      - "traefik.http.routers.rainloop.rule=Host(`mail.van-der-velde.net`)" #Domain anpassen
+      - "traefik.http.routers.rainloop.tls=true"
+      - "traefik.http.routers.rainloop.tls.certresolver=default"
+      - "traefik.http.services.rainloop.loadbalancer.server.port=8888"
+    networks:
+      - web
+
+networks:
+  web:
+    external: true

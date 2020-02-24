@@ -1,0 +1,26 @@
+---  
+version: "3.3"
+
+services:
+  ################################################
+  ####        Traefik Proxy Setup           #####
+  ###############################################
+  traefik:
+    image: traefik:v2.1.4
+    restart: "no"
+    container_name: traefik
+    ports:
+      - "80:80" # <== http
+      - "8080:8080" # <== :8080 is where the dashboard runs on
+      - "443:443" # <== https
+    volumes:
+      - /var/clouddata/traefik/config:/etc/traefik # <== Volume for external Config
+      - /var/run/docker.sock:/var/run/docker.sock # <== Volume for docker admin
+      - /etc/localtime:/etc/localtime:ro # <== Setting the right TZ
+    networks:
+      - web 
+
+      
+networks:
+  web:
+    external: true
