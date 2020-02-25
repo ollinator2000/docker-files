@@ -1,14 +1,34 @@
+#http:
+#  routers:
+#    api:
+#      entryPoints:
+#        - web-secured
+#      rule: Host(`traefik.van-der-velde.net`)
+#      service: api@internal # This is the defined name for api. You cannot change it.
+#      tls:
+#        certResolver: mytlschallenge
+#  middlewares:
+#    auth:
+#      basicauth:
+#        users:
+#          - "olveld:$$2y$$05$$21ky90znQs76wvlLMwuuUurVWCufWIQGqau7kVZYmo2XfQBCnVzdi"
+#
+
 http:
   routers:
     api:
       entryPoints:
         - web-secured
-      rule: Host(`traefik.van-der-velde.net`)
-      service: api@internal # This is the defined name for api. You cannot change it.
+        - web 
+      rule : "Host(`traefik.van-der-velde.net`)"
+      
+      service: api@internal
       tls:
         certResolver: mytlschallenge
+      middlewares:
+        - auth
   middlewares:
     auth:
-      basicauth:
+      basicAuth:
         users:
-          - "olveld:$$2y$$05$$21ky90znQs76wvlLMwuuUurVWCufWIQGqau7kVZYmo2XfQBCnVzdi"
+          - "olveld:$PASS" 

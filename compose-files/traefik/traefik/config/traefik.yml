@@ -24,5 +24,4 @@ providers:
   file:
     directory: /etc/traefik/dynamic/
 
-api:
-  dashboard: true
+api: {}
