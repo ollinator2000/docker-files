@@ -8,6 +8,8 @@ entryPoints:
     address: :443
   dashboard:
     address: :8080
+  metrics:
+    address: :8082
 
 certificatesResolvers:
   mytlschallenge:
@@ -25,3 +27,15 @@ providers:
     directory: /etc/traefik/dynamic/
 
 api: {}
+
+metrics:
+  prometheus:
+          #    entryPoint: metrics
+    manualRouting: true
+    addEntryPointsLabels: true
+    addServicesLabels: true
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5.0

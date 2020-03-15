@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  minecraft-server:
+    container_name: minecraft
+    image: itzg/minecraft-bedrock-server
+    ports:
+      - "19132:19132"
+      - "19132:19132/udp"
+    environment:
+      SERVER_NAME: "vdvnet"
+      GAMEMODE: "survival"
+      DIFFICULTY: "normal"
+      EULA: "true"
+      VERSION: "1.14.30.0" 
+      ALLOW_CHEATS: "true"
+    volumes:
+      - /var/clouddata/minecraft:/data
+    networks:
+      - minecraft
+
+networks:
+  minecraft:
+    external: true
+
+

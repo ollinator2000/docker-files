@@ -1,0 +1,14 @@
+http:
+  routers:
+    metrics:
+      rule: PathPrefix(`/metrics`)
+      service: prometheus@internal
+      entryPoints:
+      - metrics
+      middlewares:
+      - metricsAuth
+  middlewares:
+    metricsAuth:
+      basicAuth:
+        users:
+                - "user:password"

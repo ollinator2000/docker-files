@@ -13,14 +13,18 @@ services:
       - "80:80" # <== http
       - "8080:8080" # <== :8080 is where the dashboard runs on
       - "443:443" # <== https
+      - "8082:8082" # <== metrics
     volumes:
       - /var/clouddata/traefik/config:/etc/traefik # <== Volume for external Config
       - /var/run/docker.sock:/var/run/docker.sock # <== Volume for docker admin
       - /etc/localtime:/etc/localtime:ro # <== Setting the right TZ
     networks:
       - web 
+      - backend
 
       
 networks:
   web:
     external: true
+  backend:
+    external: false

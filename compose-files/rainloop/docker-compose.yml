@@ -18,7 +18,7 @@ services:
       - "traefik.http.routers.rainloop.entrypoints=web-secured"
       - "traefik.http.routers.rainloop.rule=Host(`mail.van-der-velde.net`)" #Domain anpassen
       - "traefik.http.routers.rainloop.tls=true"
-      - "traefik.http.routers.rainloop.tls.certresolver=default"
+      - "traefik.http.routers.rainloop.tls.certresolver=mytlschallenge"
       - "traefik.http.services.rainloop.loadbalancer.server.port=8888"
     networks:
       - web

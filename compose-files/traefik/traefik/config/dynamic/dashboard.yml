@@ -20,6 +20,7 @@ http:
       entryPoints:
         - web-secured
         - web 
+          #      rule : "Host(`traefik.van-der-velde.net`) && PathPrefix(`/dashboard`)"
       rule : "Host(`traefik.van-der-velde.net`)"
       
       service: api@internal
@@ -31,4 +32,4 @@ http:
     auth:
       basicAuth:
         users:
-          - "olveld:$PASS" 
+          - "user:password" 

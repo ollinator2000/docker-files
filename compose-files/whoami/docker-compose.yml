@@ -4,12 +4,23 @@ services:
   whoami:
     image: containous/whoami
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.whoami.rule=Host(`whoami.van-der-velde.net`)
-      - traefik.http.routers.whoami.tls=true
-      - traefik.http.routers.whoami.tls.certresolver=mytlschallenge
-      - traefik.http.routers.whoami.service=whoami
-      - traefik.http.services.whoami.loadbalancer.server.port=80
+#      - traefik.enable=true
+#      - traefik.http.routers.whoami.rule=Host(`whoami.van-der-velde.net`)
+#      - traefik.http.routers.whoami.tls=true
+#      - traefik.http.routers.whoami.tls.certresolver=mytlschallenge
+#      - traefik.http.routers.whoami.service=whoami
+#      - traefik.http.services.whoami.loadbalancer.server.port=80
+
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.whoami-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.whoami-http.entrypoints=web"
+      - "traefik.http.routers.whoami-http.rule=Host(`whoami.van-der-velde.net`)" #Domain anpassen
+      - "traefik.http.routers.whoami-http.middlewares=whoami-https@docker"
+      - "traefik.http.routers.whoami.entrypoints=web-secured"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.van-der-velde.net`)" #Domain anpassen
+      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.whoami.tls.certresolver=mytlschallenge"
+      - "traefik.http.services.whoami.loadbalancer.server.port=80"
     networks:
       - web
 

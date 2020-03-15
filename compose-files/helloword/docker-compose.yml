@@ -1,0 +1,20 @@
+---  
+version: "3.3"
+services:
+
+  hello:
+    image: tutum/hello-world
+    container_name: hello-world
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=hello-word"
+      - "traefik.frontend.rul=Host:hello.van-der-velde.net"
+      - "traefik.port=80"
+      - "traefik.docker.network=web"
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
+
